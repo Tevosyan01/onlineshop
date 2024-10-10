@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+
+
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<section class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="product-image">
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </a>
+        </div>
+        <div class="product-info">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <span class="product-price">{{ product.price }} ₽</span>
+            <a href="{% url 'product_detail' product.id %}" class="buy-now-btn">Купить сейчас</a>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

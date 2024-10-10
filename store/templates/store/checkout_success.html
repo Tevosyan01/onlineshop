@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+
+{% block reklam %}
+{% endblock %}
+
+{% block content %}
+<div class="checkout-success-container">
+    <div class="success-message-box">
+        <h1 class="success-title">Ваш заказ успешно оформлен!</h1>
+        <p class="order-number">Номер заказа: <strong>{{ order.id }}</strong></p>
+        <p class="order-info">Спасибо за покупку! Ваш заказ будет доставлен по адресу: <strong>{{ order.address }}</strong></p>
+        <a href="{% url 'home' %}" class="back-to-home-btn">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

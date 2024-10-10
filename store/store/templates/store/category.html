@@ -1,0 +1,6 @@
+<h1>{{ category.name }}</h1>
+<ul>
+    {% for subcategory in subcategories %}
+        <li><a href="{% url 'subcategory_detail' category.slug subcategory.slug %}">{{ subcategory.name }}</a></li>
+    {% endfor %}
+</ul>

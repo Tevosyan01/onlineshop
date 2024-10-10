@@ -1,0 +1,183 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="product-detail">
+        <!-- Блок с изображением продукта -->
+        <div class="product-images">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="main-product-image">
+        </div>
+
+        <!-- Блок с информацией о продукте -->
+        <div class="product-info">
+            <h1 class="product-name">{{ product.name }}</h1>
+
+            <p3> {{ product.description }}</p3>
+
+            <!-- Размеры продукта -->
+            <div class="product-sizes">
+                <h3 class="sizes-title">Available Sizes:</h3>
+                <div class="size-options">
+                    {% if product.gender == 'Мужчины' %}
+                        {% if product.size_type == 'Обувь' %}
+                            <button class="size-option {% if product.shoes_size_men_39 == 0 %}unavailable{% endif %}" data-size="39">39</button>
+                            <button class="size-option {% if product.shoes_size_men_40 == 0 %}unavailable{% endif %}" data-size="40">40</button>
+                            <button class="size-option {% if product.shoes_size_men_41 == 0 %}unavailable{% endif %}" data-size="41">41</button>
+                            <button class="size-option {% if product.shoes_size_men_42 == 0 %}unavailable{% endif %}" data-size="42">42</button>
+                            <button class="size-option {% if product.shoes_size_men_43 == 0 %}unavailable{% endif %}" data-size="43">43</button>
+                            <button class="size-option {% if product.shoes_size_men_44 == 0 %}unavailable{% endif %}" data-size="44">44</button>
+                        {% elif product.size_type == 'Футболка' %}
+                            <button class="size-option {% if product.shirt_size_s == 0 %}unavailable{% endif %}" data-size="S">S</button>
+                            <button class="size-option {% if product.shirt_size_m == 0 %}unavailable{% endif %}" data-size="M">M</button>
+                            <button class="size-option {% if product.shirt_size_l == 0 %}unavailable{% endif %}" data-size="L">L</button>
+                            <button class="size-option {% if product.shirt_size_xl == 0 %}unavailable{% endif %}" data-size="XL">XL</button>
+                            <button class="size-option {% if product.shirt_size_xxl == 0 %}unavailable{% endif %}" data-size="XXL">XXL</button>
+                        {% elif product.size_type == 'Джинсы' %}
+                            <button class="size-option {% if product.jeans_size_40 == 0 %}unavailable{% endif %}" data-size="40">40</button>
+                            <button class="size-option {% if product.jeans_size_42 == 0 %}unavailable{% endif %}" data-size="42">42</button>
+                            <button class="size-option {% if product.jeans_size_44 == 0 %}unavailable{% endif %}" data-size="44">44</button>
+                            <button class="size-option {% if product.jeans_size_46 == 0 %}unavailable{% endif %}" data-size="46">46</button>
+                            <button class="size-option {% if product.jeans_size_48 == 0 %}unavailable{% endif %}" data-size="48">48</button>
+                            <button class="size-option {% if product.jeans_size_50 == 0 %}unavailable{% endif %}" data-size="50">50</button>
+                        {% endif %}
+                    {% elif product.gender == 'Женщины' %}
+                        {% if product.size_type == 'Обувь' %}
+                            <button class="size-option {% if product.shoes_size_women_35 == 0 %}unavailable{% endif %}" data-size="35">35</button>
+                            <button class="size-option {% if product.shoes_size_women_36 == 0 %}unavailable{% endif %}" data-size="36">36</button>
+                            <button class="size-option {% if product.shoes_size_women_37 == 0 %}unavailable{% endif %}" data-size="37">37</button>
+                            <button class="size-option {% if product.shoes_size_women_38 == 0 %}unavailable{% endif %}" data-size="38">38</button>
+                            <button class="size-option {% if product.shoes_size_women_39 == 0 %}unavailable{% endif %}" data-size="39">39</button>
+                            <button class="size-option {% if product.shoes_size_women_40 == 0 %}unavailable{% endif %}" data-size="40">40</button>
+                        {% elif product.size_type == 'Футболка' %}
+                            <button class="size-option {% if product.shirt_size_s == 0 %}unavailable{% endif %}" data-size="S">S</button>
+                            <button class="size-option {% if product.shirt_size_m == 0 %}unavailable{% endif %}" data-size="M">M</button>
+                            <button class="size-option {% if product.shirt_size_l == 0 %}unavailable{% endif %}" data-size="L">L</button>
+                            <button class="size-option {% if product.shirt_size_xl == 0 %}unavailable{% endif %}" data-size="XL">XL</button>
+                            <button class="size-option {% if product.shirt_size_xxl == 0 %}unavailable{% endif %}" data-size="XXL">XXL</button>
+                        {% elif product.size_type == 'Джинсы' %}
+                            <button class="size-option {% if product.jeans_size_40 == 0 %}unavailable{% endif %}" data-size="40">40</button>
+                            <button class="size-option {% if product.jeans_size_42 == 0 %}unavailable{% endif %}" data-size="42">42</button>
+                            <button class="size-option {% if product.jeans_size_44 == 0 %}unavailable{% endif %}" data-size="44">44</button>
+                            <button class="size-option {% if product.jeans_size_46 == 0 %}unavailable{% endif %}" data-size="46">46</button>
+                            <button class="size-option {% if product.jeans_size_48 == 0 %}unavailable{% endif %}" data-size="48">48</button>
+                            <button class="size-option {% if product.jeans_size_50 == 0 %}unavailable{% endif %}" data-size="50">50</button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Блок выбора количества и удаления -->
+            <div id="quantity-selection">
+                <h3>Количество для выбранных размеров:</h3>
+            </div>
+
+            <!-- Общая цена -->
+            <div class="total-price">
+                <h3>Итого: <span id="total-price">{{ product.price }}</span> ₽</h3>
+            </div>
+
+            <!-- Кнопка покупки -->
+            <div class="product-purchase">
+                <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="selected-sizes" id="selected-sizes">
+                    <input type="hidden" name="selected-quantities" id="selected-quantities">
+                    <button type="submit" class="buy-now-btn">Добавить корзину</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sizeOptions = document.querySelectorAll('.size-option');
+        const quantitySelection = document.getElementById('quantity-selection');
+        const totalPriceElement = document.getElementById('total-price');
+        let selectedSizes = [];
+        let productPrice = parseFloat("{{ product.price }}");
+        let totalPrice = productPrice;
+
+        // Обработка выбора размеров
+        sizeOptions.forEach(button => {
+            button.addEventListener('click', function() {
+                const size = this.dataset.size;
+
+                // Проверяем, не был ли этот размер уже выбран
+                if (!selectedSizes.includes(size)) {
+                    selectedSizes.push(size);
+
+                    // Добавляем поле для выбора количества и кнопку удаления
+                    const quantityField = document.createElement('div');
+                    quantityField.classList.add('size-quantity');
+                    quantityField.innerHTML = `
+                        <label for="quantity-${size}">Количество для размера ${size}:</label>
+                        <input type="number" name="quantities[${size}]" id="quantity-${size}" value="1" min="1" class="quantity-input" data-size="${size}">
+                        <button type="button" class="remove-size-btn" data-size="${size}">Удалить</button>
+                    `;
+                    quantitySelection.appendChild(quantityField);
+
+                    // Обработчик изменения количества
+                    document.getElementById(`quantity-${size}`).addEventListener('input', function() {
+                        updateTotalPrice();
+                    });
+
+                    // Обработчик удаления выбранного размера
+                    document.querySelector(`.remove-size-btn[data-size="${size}"]`).addEventListener('click', function() {
+                        // Удаляем размер из выбранных
+                        selectedSizes = selectedSizes.filter(s => s !== size);
+                        // Удаляем элемент с количеством
+                        this.parentElement.remove();
+                        // Обновляем общую цену
+                        updateTotalPrice();
+                    });
+                }
+            });
+        });
+
+        // Функция для обновления общей цены
+        function updateTotalPrice() {
+            totalPrice = 0;
+            selectedSizes.forEach(size => {
+                const quantity = document.getElementById(`quantity-${size}`).value;
+                totalPrice += productPrice * parseInt(quantity);
+            });
+            totalPriceElement.textContent = totalPrice;
+        }
+
+        // Обработка кнопки "Купить сейчас"
+        document.querySelector('.buy-now-btn').addEventListener('click', function(event) {
+            if (selectedSizes.length === 0) {
+                alert('Пожалуйста, выберите хотя бы один размер.');
+                event.preventDefault();
+            } else {
+                const sizes = [];
+                const quantities = {};
+                selectedSizes.forEach(size => {
+                    const quantity = document.getElementById(`quantity-${size}`).value;
+                    sizes.push(size);
+                    quantities[size] = quantity;
+                });
+
+                document.getElementById('selected-sizes').value = JSON.stringify(sizes);
+                document.getElementById('selected-quantities').value = JSON.stringify(quantities);
+            }
+        });
+    });
+</script>
+{% endblock %}

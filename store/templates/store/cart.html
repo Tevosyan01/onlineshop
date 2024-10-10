@@ -1,0 +1,98 @@
+{% extends 'store/base.html' %}
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h1>Корзина</h1>
+
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <div class="cart-item-image">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            </div>
+            <div class="cart-item-info">
+                <h3>{{ item.product.name }}</h3>
+                <h4>{{ item.product.description }}</h4>
+                <p>Размер: {{ item.size }}</p>
+                <div class="quantity-control">
+                    <button class="qty-btn" onclick="updateQuantity('{{ item.id }}', 'decrease')">-</button>
+                    <span id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+                    <button class="qty-btn" onclick="updateQuantity('{{ item.id }}', 'increase')">+</button>
+                </div>
+                <!-- Add data-price for dynamic price calculation -->
+                <p class="item-price" id="item-price-{{ item.id }}" data-price="{{ item.price }}">{{ item.price }} ₽</p>
+                <a href="{% url 'remove_from_cart' item.id %}" class="remove-item-btn">Удалить</a>
+            </div>
+            <div class="cart-item-total">
+                <p class="total-price" id="total-price-{{ item.id }}">{{ item.total }} ₽</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <h3>Информация о заказе</h3>
+        <p>Товары: <span id="total-items">{{ cart_items_count }}</span> шт</p>
+        <p>Всего: <span id="total-cart-price">{{ total_price }} ₽</span></p>
+        <a href="{% url 'checkout' %}"><button class="checkout-btn">Оформить заказ</button></a>
+    </div>
+</div>
+
+<script>
+function updateQuantity(itemId, action) {
+    fetch(`/update-cart/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 'action': action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the item's quantity on the page
+            document.getElementById(`quantity-${itemId}`).innerText = data.new_quantity;
+
+            // Get the item price from the data-price attribute
+            const itemPrice = parseFloat(document.getElementById(`item-price-${itemId}`).dataset.price);
+            const newTotalPrice = itemPrice * data.new_quantity;
+
+            // Update the total price for this item
+            document.getElementById(`total-price-${itemId}`).innerText = newTotalPrice.toFixed(2) + ' ₽';
+
+            // Update the total cart price (for all items in the cart)
+            updateTotalCartPrice();
+
+            // Update the cart count in the header (e.g., total items)
+            updateCartCount(data.total_cart_items);
+        } else {
+            console.error('Ошибка обновления количества');
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+function updateTotalCartPrice() {
+    let totalCartPrice = 0;
+    document.querySelectorAll('.total-price').forEach((priceElement) => {
+        totalCartPrice += parseFloat(priceElement.innerText.replace(' ₽', ''));
+    });
+    document.getElementById('total-cart-price').innerText = totalCartPrice.toFixed(2) + ' ₽';
+}
+
+function updateCartCount(totalItems) {
+    // Update the cart count in the header
+    const cartCountElement = document.getElementById('cart-count');
+    cartCountElement.innerText = totalItems || 0; // If no items, show 0
+
+    // Update the total items in the cart summary
+    const totalItemsElement = document.getElementById('total-items');
+    totalItemsElement.innerText = totalItems;
+}
+</script>
+{% endblock %}

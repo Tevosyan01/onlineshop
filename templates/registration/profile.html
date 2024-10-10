@@ -1,0 +1,39 @@
+{% extends "store/base.html" %}
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="form-wrapper">
+        <h2 class="form-title">Профиль пользователя</h2>
+
+        <div class="form-row">
+            <div class="form-col">
+                <label class="profile-label">Имя пользователя:</label>
+                <input type="text" value="{{ user.username }}" readonly>
+            </div>
+            <div class="form-col">
+                <label class="profile-label">Email:</label>
+                <input type="email" value="{{ user.email }}" readonly>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col">
+                <label class="profile-label">Имя:</label>
+                <input type="text" value="{{ user.first_name }}" readonly>
+            </div>
+            <div class="form-col">
+                <label class="profile-label">Фамилия:</label>
+                <input type="text" value="{{ user.last_name }}" readonly>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'logout' %}" class="submit-btn">Выйти из аккаунта</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

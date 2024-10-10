@@ -1,0 +1,68 @@
+{% extends 'store/base.html' %}
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<div class="checkout-wrapper">
+    <h1 class="checkout-title">Оформление заказа</h1>
+
+    <form method="post" action="{% url 'checkout' %}" class="checkout-form">
+    {% csrf_token %}
+
+    <div class="checkout-row">
+        <div class="checkout-form-group">
+            <label for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name" class="checkout-input">
+        </div>
+        <div class="checkout-form-group">
+            <label for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name" class="checkout-input">
+        </div>
+    </div>
+
+    <div class="checkout-row">
+        <div class="checkout-form-group">
+            <label for="email">Электронная почта:</label>
+            <input type="email" id="email" name="email" class="checkout-input">
+        </div>
+        <div class="checkout-form-group">
+            <label for="phone">Контактный телефон:</label>
+            <input type="text" id="phone" name="phone" class="checkout-input">
+        </div>
+    </div>
+
+    <div class="checkout-row">
+        <div class="checkout-form-group full-width">
+            <label for="address">Адрес доставки:</label>
+            <input type="text" id="address" name="address" class="checkout-input">
+        </div>
+    </div>
+
+    <h3 class="checkout-items-title">Товары в заказе</h3>
+    <ul class="checkout-order-items">
+        {% for item in cart_items %}
+        <li class="checkout-order-item">
+            <div class="item-details">
+                {{ item.product.name }} — {{ item.quantity }} шт.
+            </div>
+            <div class="item-price">{{ item.product.price }} Р</div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <p class="checkout-total-price">Всего: <strong>{{ total_price }} Р</strong></p>
+
+    <button type="submit" class="checkout-submit-btn">Оформить заказ</button>
+</form>
+</div>
+
+    <script>
+ document.querySelector('form').addEventListener('submit', function(event) {
+     const formData = new FormData(this);
+     console.log('Данные формы:', Object.fromEntries(formData));
+     // Allow the form to be submitted to the server
+ });
+</script>
+{% endblock %}

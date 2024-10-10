@@ -1,0 +1,20 @@
+{% extends 'store/base.html' %}
+
+
+
+{% block reklam %}
+
+{% endblock %}
+
+{% block content %}
+<section class="product-grid">
+<div class="product-card">
+{% for product in products %}
+    <p>{{ product.name }}</p>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    <span>{{ product.price }} ₽</span>
+    <a href="#" class="buy-now-btn">Купить сейчас</a>
+</div>
+</section>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shop</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+</head>
+<body>
+<div class="wrapper">
+
+    <header>
+    <a href="{% url 'home' %}" class="logo">MyShop</a>
+    <!-- Кнопка для открытия бокового меню -->
+    <div class="menu-toggle" id="menu-toggle">☰ Категории</div>
+    <div class="search-bar">
+        <input type="text" placeholder="Search...">
+        <button>Search</button>
+    </div>
+    <div class="header-icons">
+        <a href="{% url 'contact' %}" class="icon"><span class="material-icons">location_on</span> Адреса</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'users:profile' %}" class="icon"><span class="material-icons">person</span> Профиль</a>
+        <a href="{% url 'users:logout' %}" class="icon"><span class="material-icons">logout</span> Выйти</a>
+    {% else %}
+        <a href="{% url 'users:login' %}" class="icon"><span class="material-icons">person</span> Войти</a>
+    {% endif %}
+    <a href="{% url 'cart' %}" class="icon cart-icon">
+    <span class="material-icons">shopping_cart</span>
+    Корзина
+    <span id="cart-count">{{ cart_items_count }}</span> <!-- Количество товаров в корзине -->
+    </a>
+</div>
+
+
+</header>
+
+
+    <!-- Боковое меню для категорий -->
+   <nav id="sidebar-menu" class="sidebar">
+    <div class="close-btn" id="close-btn">✖</div>
+    <ul class="categories">
+        {% for category in categories %}
+            <li class="category-item">
+                <a href="#">{{ category.name }}</a>
+                <ul class="subcategories">
+                    {% for subcategory in category.subcategories.all %}
+                        <li><a href="{% url 'subcategory_detail' category.slug subcategory.slug %}">{{ subcategory.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    </nav>
+
+
+   {% block reklam %}
+    <section class="ad-section">
+    <div class="ad-content">
+        <h2 class="ad-title">Специальное предложение!</h2>
+        <p class="ad-text">Скидки до 50% на все категории товаров. Успей купить сейчас!</p>
+        <a href="#" class="ad-button">Купить сейчас</a>
+    </div>
+    </section>
+   {% endblock %}
+
+
+
+    {% block content %}
+        <section class="product-grid">
+        {% for product in product %}
+            <div class="product-card">
+                <div class="product-image">
+                    <a href="{% url 'product_detail' product.id %}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </a>
+                </div>
+
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <span class="product-price">{{ product.price }} ₽</span>
+                    <a href="{% url 'product_detail' product.id %}" class="buy-now-btn">Купить сейчас</a>
+                 </div>
+             </div>
+    {% endfor %}
+</section>
+        {% endblock %}
+
+    <footer>
+        <p>&copy; 2024 MyShop. All rights reserved.</p>
+    </footer>
+</div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
